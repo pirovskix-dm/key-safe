@@ -1,19 +1,14 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+namespace KeySafe.KsApp.UserControls;
 
-namespace KeySafe.KsApp.UserControls
+public class SourceItemsListControl : UserControl
 {
-    public class SourceItemsListControl : UserControl
+    public SourceItemsListControl()
     {
-        public SourceItemsListControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

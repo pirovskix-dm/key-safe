@@ -1,12 +1,9 @@
-using System;
+namespace KeySafe.ViewModels.Exceptions;
 
-namespace KeySafe.ViewModels.Exceptions
+public class KsInvalidKeyException : Exception
 {
-    public class KsInvalidKeyException : Exception
+    public KsInvalidKeyException(Exception ex) : base("invalid key", ex)
     {
-        public KsInvalidKeyException(Exception ex) : base("invalid key", ex)
-        {
-            
-        }
+        
     }
 }
