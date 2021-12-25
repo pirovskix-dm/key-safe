@@ -1,0 +1,38 @@
+<UserControl 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
+    xmlns:uc="using:KeySafe.KsApp.UserControls"
+    x:Class="KeySafe.KsApp.UserControls.SourceItemViewControl">
+    
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    
+    <StackPanel IsVisible="{Binding HasSelection}" Classes="SourceItemView">
+        <uc:KsTextField
+            Title="Name:"
+            IsReadOnly="True"
+            ShowCopyButton="True"
+            Data="{Binding SelectedSafeItem.Name}" />
+        <uc:KsTextField
+            Title="Login:"
+            IsReadOnly="True"
+            ShowCopyButton="True"
+            Data="{Binding SelectedSafeItem.Login}" />
+        <uc:KsPasswordField
+            Title="Password:"
+            IsReadOnly="True"
+            ShowCopyButton="True"
+            Data="{Binding SelectedSafeItem.Password}"
+            RevealPassword="False" />
+        <Button
+            Content="Edit"
+            Command="{Binding EditSourceCommand}"
+            CommandParameter="{Binding SelectedSafeItem}" />
+    </StackPanel>
+    
+</UserControl>

@@ -1,0 +1,38 @@
+<Window 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="using:KeySafe.KsApp.UserControls"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+    Width="900"
+    Height="500"
+    x:Class="KeySafe.KsApp.Views.MainWindow"
+    Title="KeySafe">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <uc:OsxMenu Grid.Row="0" DataContext="{Binding}"/>
+        <uc:WinMenu Grid.Row="0" DataContext="{Binding}"/>
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+            <uc:SourceItemsListControl 
+                Grid.Column="0" 
+                DataContext="{Binding}" />
+            <uc:SourceItemViewControl 
+                Grid.Column="1"
+                DataContext="{Binding}" />
+        </Grid>
+    </Grid>
+
+    <i:Interaction.Behaviors>
+        <EventTriggerBehavior EventName="Opened">
+            <InvokeCommandAction Command="{Binding InitializeCommand}" />
+        </EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+</Window>

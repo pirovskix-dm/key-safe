@@ -1,0 +1,41 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="KeySafe.KsApp.Views.LoginWindow"
+    xmlns:uc="using:KeySafe.KsApp.UserControls"
+    Width="260"
+    Height="280"
+    Classes="LoginWindow"
+    WindowStartupLocation="CenterOwner"
+    CanResize="False"
+    SystemDecorations="BorderOnly"
+    Title="Login">
+
+    <StackPanel Classes="LoginPanel">
+        <TextBlock
+            Classes="LoginHeader"
+            Text="Log In" />
+        <TextBox
+            Watermark="Login"
+            Name="KsLoginBox" />
+        <TextBox
+            Name="KsPasswordBox"
+            Watermark="Password"
+            PasswordChar="*" />
+        <Button
+            Name="KsLoginButton"
+            Content="Log in" />
+        <Button
+            Name="KsRegisterButton"
+            Content="Register" />
+        <Button
+            Click="ExitButton_OnClick"
+            Content="Exit" />
+        <uc:ErrorField
+            Name="ErrorField" />
+    </StackPanel>
+
+</Window>

@@ -1,0 +1,36 @@
+<UserControl 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="KeySafe.KsApp.UserControls.SourceItemsListControl">
+    
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    
+    <Grid RowDefinitions="Auto,*" Classes="SourceItemsList">
+        <StackPanel Grid.Row="0">
+            <Button
+                Content="Add"
+                Command="{Binding AddSourceCommand}" />
+            <Button
+                Command="{Binding RemoveSourceCommand}"
+                CommandParameter="{Binding SelectedSafeItem}"
+                Content="Delete" />
+        </StackPanel>
+        <ListBox
+            Items="{Binding SafeItems}"
+            SelectedItem="{Binding SelectedSafeItem}"
+            Grid.Row="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+    
+</UserControl>
