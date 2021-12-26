@@ -23,12 +23,23 @@
             IsReadOnly="True"
             ShowCopyButton="True"
             Data="{Binding SelectedSafeItem.Login}" />
+        <uc:KsTextField
+            Title="Web:"
+            IsReadOnly="True"
+            ShowCopyButton="True"
+            Data="{Binding SelectedSafeItem.Web}" />
         <uc:KsPasswordField
             Title="Password:"
             IsReadOnly="True"
             ShowCopyButton="True"
             Data="{Binding SelectedSafeItem.Password}"
             RevealPassword="False" />
+        <uc:KsTextField
+            Title="Note:"
+            Lines="4"
+            IsReadOnly="True"
+            ShowCopyButton="True"
+            Data="{Binding SelectedSafeItem.Note}" />
         <Button
             Content="Edit"
             Command="{Binding EditSourceCommand}"

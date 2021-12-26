@@ -5,8 +5,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     xmlns:uc="using:KeySafe.KsApp.UserControls"
-    Width="470"
-    Height="220"
+    Width="475"
+    Height="360"
     WindowStartupLocation="CenterOwner"
     CanResize="False"
     x:Class="KeySafe.KsApp.Views.SourceItemWindow"
@@ -19,9 +19,16 @@
         <uc:KsTextField
             Name="LoginField"
             Title="Login:" />
+        <uc:KsTextField
+            Name="WebField"
+            Title="Web:" />
         <uc:KsPasswordField
             Name="PasswordField"
             Title="Password:" />
+        <uc:KsTextField
+            Name="NoteField"
+            Lines="4"
+            Title="Note:" />
         <StackPanel>
             <Button Name="SaveButton" Content="Save" />
             <Button Name="CancelButton" Content="Cancel" />

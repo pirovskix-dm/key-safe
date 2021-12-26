@@ -18,12 +18,14 @@ public class SourceItemWindow : Window
         AvaloniaXamlLoader.Load(this);
     }
         
-    public static Task<SafeItemEditResult> ShowAsync(Window parent, string name, string login, string password)
+    public static Task<SafeItemEditResult> ShowAsync(Window parent, string name, string login, string password, string web, string note)
     {
         var sourceItemWindow = new SourceItemWindow();
 
         var nameField = sourceItemWindow.FindControl<KsTextField>("NameField");
         var loginField = sourceItemWindow.FindControl<KsTextField>("LoginField");
+        var webField = sourceItemWindow.FindControl<KsTextField>("WebField");
+        var noteField = sourceItemWindow.FindControl<KsTextField>("NoteField");
         var passwordField = sourceItemWindow.FindControl<KsPasswordField>("PasswordField");
         var errorField = sourceItemWindow.FindControl<ErrorField>("ErrorField");
         var saveButton = sourceItemWindow.FindControl<Button>("SaveButton");
@@ -32,6 +34,9 @@ public class SourceItemWindow : Window
         nameField.Text = name ?? string.Empty;
         loginField.Text = login ?? string.Empty;
         passwordField.Password = password ?? string.Empty;
+        webField.Text = web ?? string.Empty;
+        webField.Text = web ?? string.Empty;
+        noteField.Text = note ?? string.Empty;
             
         var tcs = new TaskCompletionSource<SafeItemEditResult>();
             
@@ -43,19 +48,26 @@ public class SourceItemWindow : Window
                 return;
             }
                 
-            tcs.TrySetResult(new SafeItemEditResult(nameField.Text, loginField.Text, passwordField.Password, false));
+            tcs.TrySetResult(new SafeItemEditResult()
+            {
+                Name = nameField.Text,
+                Login = loginField.Text,
+                Password = passwordField.Password,
+                Web = webField.Text,
+                Note = noteField.Text,
+            });
             sourceItemWindow.Close();
         };
             
         cancelButton.Click += delegate
         {
-            tcs.TrySetResult(new SafeItemEditResult(null, null, null, true));
+            tcs.TrySetResult(new SafeItemEditResult(null, null, null, null, null, true));
             sourceItemWindow.Close();
         };
             
         sourceItemWindow.Closed += delegate
         {
-            tcs.TrySetResult(new SafeItemEditResult(null, null, null, true)); 
+            tcs.TrySetResult(new SafeItemEditResult(null, null, null, null, null, true)); 
         };
             
         sourceItemWindow.ShowDialog(parent);

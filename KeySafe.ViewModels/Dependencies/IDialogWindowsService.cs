@@ -10,7 +10,7 @@ public enum LoginAction
 
 public readonly record struct LoginResult(string Login, string Password, LoginAction LoginAction);
 
-public readonly record struct SafeItemEditResult(string Name, string Login, string Password, bool Cancel);
+public readonly record struct SafeItemEditResult(string Name, string Login, string Password, string Web, string Note, bool Cancel);
 
 public readonly record struct PasswordChangeResult(string OldPassword, string NewPassword, bool Cancel);
 

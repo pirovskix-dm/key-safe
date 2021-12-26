@@ -11,7 +11,7 @@ public class DialogWindowsService : IDialogWindowsService
     public async Task<SafeItemEditResult> ShowSafeItemWindowAsync(SafeItemViewModel safeItem = null)
     {
         var desktop = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
-        var result = await SourceItemWindow.ShowAsync(desktop.MainWindow, safeItem?.Name, safeItem?.Login, safeItem?.Password);
+        var result = await SourceItemWindow.ShowAsync(desktop.MainWindow, safeItem?.Name, safeItem?.Login, safeItem?.Password, safeItem?.Web, safeItem?.Note);
         desktop.MainWindow.Activate();
         return result;
     }

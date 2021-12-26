@@ -3,7 +3,7 @@ using KeySafe.ViewModels.Extensions;
 
 namespace KeySafe.ViewModels.Service;
 
-public readonly record struct StorageItem(string Name, string Login, string Password);
+public readonly record struct StorageItem(string Name, string Login, string Password, string Web, string Note);
 
 public class StorageService
 {

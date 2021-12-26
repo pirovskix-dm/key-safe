@@ -7,5 +7,8 @@ public class SafeItemViewModel : ViewModelBase
     public string Login { get; set; }
 
     public string Password { get; set; }
+    
+    public string Web { get; set; }
+    
+    public string Note { get; set; }
 }
-

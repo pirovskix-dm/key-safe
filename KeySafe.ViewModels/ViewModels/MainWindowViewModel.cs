@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using KeySafe.ViewModels.Commands;
 using KeySafe.ViewModels.Dependencies;
+using KeySafe.ViewModels.Mappers;
 using KeySafe.ViewModels.Service;
 
 namespace KeySafe.ViewModels.ViewModels;
@@ -88,14 +89,9 @@ public class MainWindowViewModel : ViewModelBase
     {
         var safeItems = new ObservableCollection<SafeItemViewModel>();
         var storageItems = await storageService.GetAsync();
-        foreach (var (name, login, password) in storageItems)
+        foreach (var storageItem in storageItems)
         {
-            safeItems.Add(new SafeItemViewModel
-            {
-                Name = name,
-                Login = login,
-                Password = password
-            });
+            safeItems.Add(storageItem.ToSafeItemViewModel());
         }
         return safeItems;
     }
@@ -108,10 +104,7 @@ public class MainWindowViewModel : ViewModelBase
             return;
         }
 
-        safeItem.Name = result.Name;
-        safeItem.Login = result.Login;
-        safeItem.Password = result.Password;
-        
+        result.ToSafeItemViewModel(ref safeItem);
         await UpdateStorageAsync();
     }
 
@@ -129,23 +122,13 @@ public class MainWindowViewModel : ViewModelBase
             return;
         }
         
-        SafeItems.Add(new SafeItemViewModel()
-        {
-            Name = result.Name,
-            Login = result.Login,
-            Password = result.Password
-        });
+        SafeItems.Add(result.ToSafeItemViewModel());
 
         await UpdateStorageAsync();
     }
 
     private Task UpdateStorageAsync()
     {
-        return _storageService.SetAsync(SafeItems.Select(item => new StorageItem
-        {
-            Name = item.Name,
-            Login = item.Login,
-            Password = item.Password
-        }).ToList());
+        return _storageService.SetAsync(SafeItems.Select(item => item.ToStorageItem()).ToList());
     }
 }
