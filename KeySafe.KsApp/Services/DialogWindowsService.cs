@@ -16,10 +16,10 @@ public class DialogWindowsService : IDialogWindowsService
         return result;
     }
 
-    public async Task<LoginResult> ShowLoginWindowAsync(string errorMessage = null)
+    public async Task<LoginResult> ShowLoginWindowAsync(string loginFile, string errorMessage = null)
     {
         var desktop = (IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime;
-        var result = await LoginWindow.ShowAsync(desktop.MainWindow, errorMessage);
+        var result = await LoginWindow.ShowAsync(desktop.MainWindow, loginFile, errorMessage);
         desktop.MainWindow.Activate();
         return result;
     }

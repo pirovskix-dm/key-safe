@@ -9,27 +9,27 @@ public class StorageService
 {
     private const string SECRET = "hpYo2FFZoGj133LHn7ei";
     
-    private readonly string _path;
+    private readonly string _file;
     
     private string _key;
 
     public StorageService(string file, string password)
     {
-        var directory = InitDirectory();
-        _path = Path.Combine(directory, file);
+        _file = file;
         _key = GetKey(password);
     }
 
     public bool Exists()
     {
-        return File.Exists(_path);
+        return File.Exists(_file);
     }
     
     public async Task CreateAsync()
     {
-        if (!File.Exists(_path))
+        if (!File.Exists(_file))
         {
-            await using var _ = File.Create(_path);
+            await using var fs = File.Create(_file);
+            await fs.EncryptAsync(Array.Empty<StorageItem>(), _key);
         }
     }
 
@@ -42,7 +42,7 @@ public class StorageService
     
     public async Task<bool> ValidatePasswordAsync(string password)
     {
-        await using var fs = File.OpenRead(_path);
+        await using var fs = File.OpenRead(_file);
         try
         {
             await fs.DecryptAsync<dynamic>(GetKey(password));
@@ -56,7 +56,7 @@ public class StorageService
 
     public async Task<bool> ValidatePasswordAsync()
     {
-        await using var fs = File.OpenRead(_path);
+        await using var fs = File.OpenRead(_file);
         try
         {
             await fs.DecryptAsync<dynamic>(_key);
@@ -70,26 +70,18 @@ public class StorageService
 
     public async Task<IReadOnlyCollection<StorageItem>> GetAsync()
     {
-        await using var fs = File.OpenRead(_path);
+        await using var fs = File.OpenRead(_file);
         return await fs.DecryptAsync<List<StorageItem>>(_key);
     }
 
     public async Task SetAsync(IReadOnlyCollection<StorageItem> data)
     {
-        await using var fs = new FileStream(_path, FileMode.Truncate, FileAccess.Write, FileShare.None);
+        await using var fs = new FileStream(_file, FileMode.Truncate, FileAccess.Write, FileShare.None);
         await fs.EncryptAsync(data, _key);
     }
     
     private string GetKey(string password)
     {
         return $"{password.Trim().Replace(" ", "+")}_{SECRET}";
-    }
-
-    private static string InitDirectory()
-    {
-        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var baseDirectory = Path.Combine(localAppData, "KeySafe");
-        Directory.CreateDirectory(baseDirectory);
-        return baseDirectory;
     }
 }

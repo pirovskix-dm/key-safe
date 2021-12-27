@@ -28,9 +28,12 @@ public class MainWindowViewModel : ViewModelBase
 
     private StorageService _storageService;
 
+    private readonly SettingsService _settingsService;
+
     public MainWindowViewModel(IDialogWindowsService dialogWindowsService)
     {
         _dialogWindowsService = dialogWindowsService;
+        _settingsService = new SettingsService();
 
         InitializeCommand = new AsyncDelegateCommand(OnInitialize);
         AddSourceCommand = new AsyncDelegateCommand(OnAddSource);
@@ -57,27 +60,29 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task OnInitialize()
     {
-        var (login, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync();
+        var (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile);
         while (true)
         {
-            var storageService = new StorageService(login, password);
+            var storageService = new StorageService(file, password);
             switch (loginAction)
             {
                 case LoginAction.Login when !storageService.Exists():
-                    (login, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("Login not found");
+                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("File not found");
                     continue;
                 case LoginAction.Register when storageService.Exists():
-                    (login, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("Login already exists");
+                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("File already exists");
                     continue;
                 case LoginAction.Login when !await storageService.ValidatePasswordAsync():
-                    (login, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("Invalid password");
+                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("Invalid password");
                     continue;
                 case LoginAction.Login:
                     SafeItems = await GetSafeItemsAsync(storageService);
+                    await _settingsService.UpdateLoginFileAsync(file);
                     _storageService = storageService;
                     return;
                 case LoginAction.Register:
                     await storageService.CreateAsync();
+                    await _settingsService.UpdateLoginFileAsync(file);
                     SafeItems = new ObservableCollection<SafeItemViewModel>();
                     _storageService = storageService;
                     return;

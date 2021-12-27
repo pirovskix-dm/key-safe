@@ -16,8 +16,21 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="Profile">
+                <NativeMenuItem.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem 
+                            Header="Change Password" 
+                            Command="{Binding ChangePasswordCommand}" />
+                    </NativeMenu>
+                </NativeMenuItem.Menu>
+            </NativeMenuItem>
+        </NativeMenu>
+    </NativeMenu.Menu>
+    
     <Grid RowDefinitions="Auto,*">
-        <uc:OsxMenu Grid.Row="0" DataContext="{Binding}"/>
         <uc:WinMenu Grid.Row="0" DataContext="{Binding}"/>
         <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
             <uc:SourceItemsListControl 

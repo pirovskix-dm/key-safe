@@ -15,12 +15,9 @@
     Title="Login">
 
     <StackPanel Classes="LoginPanel">
-        <TextBlock
-            Classes="LoginHeader"
-            Text="Log In" />
-        <TextBox
-            Watermark="Login"
-            Name="KsLoginBox" />
+        <Button
+            Name="KsSelectFileButton"
+            Content="Select file" />
         <TextBox
             Name="KsPasswordBox"
             Watermark="Password"
@@ -29,8 +26,8 @@
             Name="KsLoginButton"
             Content="Log in" />
         <Button
-            Name="KsRegisterButton"
-            Content="Register" />
+            Name="KsCreateFileButton"
+            Content="Create file" />
         <Button
             Click="ExitButton_OnClick"
             Content="Exit" />

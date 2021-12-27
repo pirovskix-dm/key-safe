@@ -21,15 +21,27 @@ public class LoginWindow : Window
         AvaloniaXamlLoader.Load(this);
     }
 
-    public static Task<LoginResult> ShowAsync(Window parent, string errorMessage)
+    public static Task<LoginResult> ShowAsync(Window parent, string loginFile, string errorMessage)
     {
         var loginWindow = new LoginWindow();
-            
-        var loginField = loginWindow.FindControl<TextBox>("KsLoginBox");
+
+        var selectedFile = string.Empty;
+        
+        var selectFileButton = loginWindow.FindControl<Button>("KsSelectFileButton");
         var passwordField = loginWindow.FindControl<TextBox>("KsPasswordBox");
         var errorField = loginWindow.FindControl<ErrorField>("ErrorField");
         var loginButton = loginWindow.FindControl<Button>("KsLoginButton");
-        var registerButton = loginWindow.FindControl<Button>("KsRegisterButton");
+        var createFileButton = loginWindow.FindControl<Button>("KsCreateFileButton");
+
+        if (!string.IsNullOrWhiteSpace(loginFile))
+        {
+            var loginFileInfo = new FileInfo(loginFile);
+            if (loginFileInfo.Exists)
+            {
+                selectFileButton.Content = loginFileInfo.Name;
+                selectedFile = loginFile;
+            }
+        }
 
         if (!string.IsNullOrWhiteSpace(errorMessage))
         {
@@ -37,22 +49,50 @@ public class LoginWindow : Window
         }
             
         var tcs = new TaskCompletionSource<LoginResult>();
-            
-        registerButton.Click += delegate
+
+        createFileButton.Click += async delegate
         {
-            if (string.IsNullOrWhiteSpace(loginField.Text) || string.IsNullOrWhiteSpace(loginField.Text))
+            if (string.IsNullOrWhiteSpace(passwordField.Text))
             {
-                errorField.Show("Please, provide login and password");
+                errorField.Show("Please, provide a password");
                 return;
             }
-                
-            tcs.TrySetResult(new LoginResult(loginField.Text.Trim(), passwordField.Text.Trim(), LoginAction.Register));
+
+            var saveFileDialog = new SaveFileDialog();
+            var file = await saveFileDialog.ShowAsync(loginWindow);
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                errorField.Show("Please, provide a file");
+                return;
+            }
+            
+            tcs.TrySetResult(new LoginResult(file, passwordField.Text.Trim(), LoginAction.Register));
             loginWindow.Close();
         };
             
+        selectFileButton.Click += async delegate
+        {
+            var openFileDialog = new OpenFileDialog();
+            var file = (await openFileDialog.ShowAsync(loginWindow))?.FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(file))
+            {
+                errorField.Show("Please, chose a file");
+                return;
+            }
+
+            selectFileButton.Content = new FileInfo(file).Name;
+            selectedFile = file;
+        };
+
         loginButton.Click += delegate
         {
-            tcs.TrySetResult(new LoginResult(loginField.Text.Trim(), passwordField.Text.Trim(), LoginAction.Login));
+            if (string.IsNullOrWhiteSpace(selectedFile) || string.IsNullOrWhiteSpace(passwordField.Text))
+            {
+                errorField.Show("Please, provide file and password");
+                return;
+            }
+            
+            tcs.TrySetResult(new LoginResult(selectedFile, passwordField.Text.Trim(), LoginAction.Login));
             loginWindow.Close();
         };
             
