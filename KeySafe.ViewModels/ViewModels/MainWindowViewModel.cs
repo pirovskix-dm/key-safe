@@ -67,13 +67,14 @@ public class MainWindowViewModel : ViewModelBase
             switch (loginAction)
             {
                 case LoginAction.Login when !storageService.Exists():
-                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("File not found");
+                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, "File not found");
                     continue;
                 case LoginAction.Register when storageService.Exists():
-                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("File already exists");
+                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, "File already exists");
                     continue;
                 case LoginAction.Login when !await storageService.ValidatePasswordAsync():
-                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync("Invalid password");
+                    await _settingsService.UpdateLoginFileAsync(file);
+                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, "Invalid password");
                     continue;
                 case LoginAction.Login:
                     SafeItems = await GetSafeItemsAsync(storageService);
