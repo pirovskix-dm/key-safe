@@ -8,19 +8,19 @@ public class KsPasswordField : UserControl, IStyleable
     Type IStyleable.StyleKey => typeof(KsPasswordField);
         
     public static readonly StyledProperty<bool> RevealPasswordProperty =
-        AvaloniaProperty.Register<KsPasswordField, bool>(nameof(RevealPassword));
+        AvaloniaProperty.Register<KsPasswordField, bool>(nameof(RevealPassword), defaultValue: false);
         
     public static readonly StyledProperty<string> DataProperty =
-        AvaloniaProperty.Register<KsPasswordField, string>(nameof(Data));
+        AvaloniaProperty.Register<KsPasswordField, string>(nameof(Data), defaultValue: string.Empty);
         
     public static readonly StyledProperty<string> TitleProperty =
-        AvaloniaProperty.Register<KsPasswordField, string>(nameof(Title));
+        AvaloniaProperty.Register<KsPasswordField, string>(nameof(Title), defaultValue: string.Empty);
         
     public static readonly StyledProperty<bool> IsReadOnlyProperty =
-        AvaloniaProperty.Register<KsPasswordField, bool>(nameof(IsReadOnly));
+        AvaloniaProperty.Register<KsPasswordField, bool>(nameof(IsReadOnly), defaultValue: false);
         
     public static readonly StyledProperty<bool> ShowCopyButtonProperty =
-        AvaloniaProperty.Register<KsPasswordField, bool>(nameof(ShowCopyButton));
+        AvaloniaProperty.Register<KsPasswordField, bool>(nameof(ShowCopyButton), defaultValue: false);
 
     public string Password
     {

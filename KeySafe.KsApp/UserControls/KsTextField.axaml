@@ -13,7 +13,11 @@
         <TextBox
             Name="KsTextBox"
             IsReadOnly="{Binding IsReadOnly, ElementName=KsTextField}"
-            Text="{Binding Data, ElementName=KsTextField}" />
+            Text="{Binding Data, ElementName=KsTextField}">
+            <ToolTip.Tip>
+                <TextBlock Text="{Binding Data, ElementName=KsTextField}" />
+            </ToolTip.Tip>
+        </TextBox>
         <Button
             IsVisible="{Binding ShowCopyButton, ElementName=KsTextField}"
             Content="Copy"

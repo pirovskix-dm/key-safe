@@ -75,11 +75,16 @@ public class KsTextField : UserControl, IStyleable
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _textBox.AcceptsReturn = Lines > 1;
-        _textBox.TextWrapping = Lines > 1 ? TextWrapping.Wrap : TextWrapping.NoWrap;
-        _textBox.Height = Lines * 25;
+        
+        if (Lines > 1)
+        {
+            _textBox.Height = Lines * 25;
+            _textBox.AcceptsReturn = true;
+            _textBox.TextWrapping = TextWrapping.Wrap;
+            _textBox.ClearValue(ToolTip.TipProperty);
+        }
     }
-
+    
     private void CopyButton_OnClick(object sender, RoutedEventArgs e)
     {
         var text = _textBox.Text;
