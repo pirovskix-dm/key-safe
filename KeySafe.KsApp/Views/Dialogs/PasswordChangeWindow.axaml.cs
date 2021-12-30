@@ -22,8 +22,8 @@ public class PasswordChangeWindow : Window
     {
         var passwordChangeWindow = new PasswordChangeWindow();
             
-        var oldPasswordField = passwordChangeWindow.FindControl<KsTextField>("OldPasswordField");
-        var newPasswordField = passwordChangeWindow.FindControl<KsTextField>("NewPasswordField");
+        var oldPasswordField = passwordChangeWindow.FindControl<KsPasswordField>("OldPasswordField");
+        var newPasswordField = passwordChangeWindow.FindControl<KsPasswordField>("NewPasswordField");
         var errorField = passwordChangeWindow.FindControl<ErrorField>("ErrorField");
         var changeButton = passwordChangeWindow.FindControl<Button>("ChangeButton");
         var cancelButton = passwordChangeWindow.FindControl<Button>("CancelButton");
@@ -37,19 +37,19 @@ public class PasswordChangeWindow : Window
             
         changeButton.Click += delegate
         {
-            if (string.IsNullOrWhiteSpace(oldPasswordField.Text) || string.IsNullOrWhiteSpace(newPasswordField.Text))
+            if (string.IsNullOrWhiteSpace(oldPasswordField.Password) || string.IsNullOrWhiteSpace(newPasswordField.Password))
             {
                 errorField.Show("Please, provide an old password and a new password");
                 return;
             }
 
-            if (oldPasswordField.Text == newPasswordField.Text)
+            if (oldPasswordField.Password == newPasswordField.Password)
             {
                 errorField.Show("old and new password should not be same");
                 return;
             }
                 
-            tcs.TrySetResult(new PasswordChangeResult(oldPasswordField.Text.Trim(), newPasswordField.Text.Trim(), false));
+            tcs.TrySetResult(new PasswordChangeResult(oldPasswordField.Password.Trim(), newPasswordField.Password.Trim(), false));
             passwordChangeWindow.Close();
         };
 
