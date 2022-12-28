@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <CFBundleShortVersionString>0.1</CFBundleShortVersionString>
+        <LangVersion>11</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

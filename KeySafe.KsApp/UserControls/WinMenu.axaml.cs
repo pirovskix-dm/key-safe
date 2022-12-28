@@ -13,6 +13,6 @@ public class WinMenu : UserControl
     {
         AvaloniaXamlLoader.Load(this);
         var runtimeInfo = AvaloniaLocator.Current.GetService<IRuntimePlatform>().GetRuntimeInfo();
-        IsVisible = runtimeInfo.IsDesktop && runtimeInfo.OperatingSystem == OperatingSystemType.WinNT;
+        IsVisible = runtimeInfo is { IsDesktop: true, OperatingSystem: OperatingSystemType.WinNT };
     }
 }

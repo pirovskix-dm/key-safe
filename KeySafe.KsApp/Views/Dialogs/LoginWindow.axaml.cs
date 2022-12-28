@@ -1,6 +1,8 @@
+using System.Net.Security;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using KeySafe.KsApp.Services;
 using KeySafe.KsApp.UserControls;
 using KeySafe.ViewModels.Dependencies;
 
@@ -58,8 +60,7 @@ public class LoginWindow : Window
                 return;
             }
 
-            var saveFileDialog = new SaveFileDialog();
-            var file = await saveFileDialog.ShowAsync(loginWindow);
+            var file = await loginWindow.SaveFileDialogAsync();
             if (string.IsNullOrWhiteSpace(file))
             {
                 errorField.Show("Please, provide a file");
@@ -69,18 +70,17 @@ public class LoginWindow : Window
             tcs.TrySetResult(new LoginResult(file, passwordField.Text.Trim(), LoginAction.Register));
             loginWindow.Close();
         };
-            
+        
         selectFileButton.Click += async delegate
         {
-            var openFileDialog = new OpenFileDialog();
-            var file = (await openFileDialog.ShowAsync(loginWindow))?.FirstOrDefault();
+            var file = await loginWindow.OpenFileDialogAsync();
             if (string.IsNullOrWhiteSpace(file))
             {
                 errorField.Show("Please, chose a file");
                 return;
             }
 
-            selectFileButton.Content = new FileInfo(file).Name;
+            selectFileButton.Content = FileSystemService.GetFileName(file);
             selectedFile = file;
         };
 

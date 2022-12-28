@@ -26,7 +26,7 @@ public class MainWindowViewModel : ViewModelBase
     
     private readonly IDialogWindowsService _dialogWindowsService;
 
-    private StorageService _storageService;
+    private KsStorage _ksStorage;
 
     private readonly SettingsService _settingsService;
 
@@ -50,51 +50,46 @@ public class MainWindowViewModel : ViewModelBase
             return;
         }
 
-        while (!await _storageService.ValidatePasswordAsync(oldPassword))
+        while (!await _ksStorage.ChangePasswordAsync(oldPassword, newPassword))
         {
             (oldPassword, newPassword, cancel) = await _dialogWindowsService.ShowPasswordChangeWindowAsync("Invalid old password");
+            if (cancel)
+            {
+                return;
+            }
         }
-
-        await _storageService.ChangePasswordAsync(newPassword);
     }
 
     private async Task OnInitialize()
     {
         var (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile);
+
+        var hi = new Dictionary<LoginAction, Func<string, string, Task<StorageGetResult>>>
+        {
+            { LoginAction.Login, KsStorage.GetAsync },
+            { LoginAction.Register, KsStorage.CreateAsync },
+        };
+        
         while (true)
         {
-            var storageService = new StorageService(file, password);
-            switch (loginAction)
+            var result = await hi[loginAction].Invoke(file, password);
+            if (!result.Success)
             {
-                case LoginAction.Login when !storageService.Exists():
-                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, "File not found");
-                    continue;
-                case LoginAction.Register when storageService.Exists():
-                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, "File already exists");
-                    continue;
-                case LoginAction.Login when !await storageService.ValidatePasswordAsync():
-                    await _settingsService.UpdateLoginFileAsync(file);
-                    (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, "Invalid password");
-                    continue;
-                case LoginAction.Login:
-                    SafeItems = await GetSafeItemsAsync(storageService);
-                    await _settingsService.UpdateLoginFileAsync(file);
-                    _storageService = storageService;
-                    return;
-                case LoginAction.Register:
-                    await storageService.CreateAsync();
-                    await _settingsService.UpdateLoginFileAsync(file);
-                    SafeItems = new ObservableCollection<SafeItemViewModel>();
-                    _storageService = storageService;
-                    return;
+                (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, result.ErrorMessage);
+                continue;
             }
+            
+            SafeItems = await SetSafeItemsAsync(result.Storage);
+            _ksStorage = result.Storage;
+            await _settingsService.UpdateLoginFileAsync(file);
+            return;
         }
     }
 
-    private async Task<ObservableCollection<SafeItemViewModel>> GetSafeItemsAsync(StorageService storageService)
+    private async Task<ObservableCollection<SafeItemViewModel>> SetSafeItemsAsync(KsStorage storage)
     {
+        var storageItems = await storage.GetItemsAsync();
         var safeItems = new ObservableCollection<SafeItemViewModel>();
-        var storageItems = await storageService.GetAsync();
         foreach (var storageItem in storageItems)
         {
             safeItems.Add(storageItem.ToSafeItemViewModel());
@@ -129,12 +124,12 @@ public class MainWindowViewModel : ViewModelBase
         }
         
         SafeItems.Add(result.ToSafeItemViewModel());
-
         await UpdateStorageAsync();
     }
 
     private Task UpdateStorageAsync()
     {
-        return _storageService.SetAsync(SafeItems.Select(item => item.ToStorageItem()).ToList());
+        var storageItems = SafeItems.Select(item => item.ToStorageItem()).ToList();
+        return _ksStorage.SetItemsAsync(storageItems);
     }
 }

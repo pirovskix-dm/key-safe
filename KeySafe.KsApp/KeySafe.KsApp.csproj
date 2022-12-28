@@ -9,6 +9,7 @@
         <CFBundleShortVersionString>0.1</CFBundleShortVersionString>
         <CFBundleDisplayName>MyKeySafeProject</CFBundleDisplayName>
         <CFBundleName>MyKeySafeProject</CFBundleName>
+        <LangVersion>11</LangVersion>
         
     </PropertyGroup>
     <ItemGroup>
