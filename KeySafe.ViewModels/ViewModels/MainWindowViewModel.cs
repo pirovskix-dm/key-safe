@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Text.Json;
 using KeySafe.ViewModels.Commands;
 using KeySafe.ViewModels.Dependencies;
 using KeySafe.ViewModels.Mappers;
@@ -76,15 +75,16 @@ public class MainWindowViewModel : ViewModelBase
         
         while (true)
         {
-            var result = await hi[loginAction].Invoke(file, password);
-            if (!result.Success)
+            var (success, errorMessage, storage) = await hi[loginAction].Invoke(file, password);
+            if (!success)
             {
-                (file, password, loginAction) = await _dialogWindowsService.ShowLoginWindowAsync(_settingsService.Settings.LoginFile, result.ErrorMessage);
+                (file, password, loginAction) = await _dialogWindowsService
+                    .ShowLoginWindowAsync(_settingsService.Settings.LoginFile, errorMessage);
                 continue;
             }
-            
-            SafeItems = ToSafeItems(await result.Storage.GetItemsAsync());
-            _ksStorage = result.Storage;
+
+            _ksStorage = storage;
+            SafeItems = ToSafeItems(await storage.GetItemsAsync());
             await _settingsService.UpdateLoginFileAsync(file);
             return;
         }
@@ -162,7 +162,7 @@ public class MainWindowViewModel : ViewModelBase
         
         await using var fr = File.OpenRead(result.File);
         
-        var itemsToAdd = await JsonSerializer.DeserializeAsync<List<StorageItem>>(fr);
+        var itemsToAdd = await fr.DeserializeAsync<List<StorageItem>>();
         var newItems = SafeItems
             .Select(item => item.ToStorageItem())
             .Concat(itemsToAdd)

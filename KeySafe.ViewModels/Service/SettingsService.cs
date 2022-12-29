@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace KeySafe.ViewModels.Service;
 
 public readonly record struct SettingsItem(string LoginFile);
@@ -31,12 +29,12 @@ public class SettingsService
         {
             return default;
         }
-        return JsonSerializer.Deserialize<SettingsItem>(json);
+        return json.Deserialize<SettingsItem>();
     }
 
     private Task SetSettingsAsync(SettingsItem settingsItem)
     {
-        var json = JsonSerializer.Serialize(settingsItem);
+        var json = settingsItem.Serialize();
         return File.WriteAllTextAsync(_file, json);
     }
     
@@ -54,7 +52,7 @@ public class SettingsService
         if (!File.Exists(file))
         {
             var def = new SettingsItem(string.Empty);
-            var json = JsonSerializer.Serialize(def);
+            var json = def.Serialize();
             using var sw = File.CreateText(file!);
             sw.WriteLine(json);
         }

@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using KeySafe.ViewModels.Exceptions;
+using KeySafe.ViewModels.Service;
 
 namespace KeySafe.ViewModels.Extensions;
 
@@ -12,7 +13,7 @@ public static class CryptoExtensions
         using var aes = GetAes(key);
         using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
         await using var cryptoStream = new CryptoStream(fileStream, encryptor, CryptoStreamMode.Write);
-        await cryptoStream.WriteAsync(JsonSerializer.SerializeToUtf8Bytes(data));
+        await cryptoStream.WriteAsync(data.SerializeToUtf8Bytes());
         await cryptoStream.FlushFinalBlockAsync();
     }
 
@@ -23,7 +24,7 @@ public static class CryptoExtensions
         try
         {
             await using var cryptoStream = new CryptoStream(fileStream, decryptor, CryptoStreamMode.Read);
-            return await JsonSerializer.DeserializeAsync<T>(cryptoStream);
+            return await cryptoStream.DeserializeAsync<T>();
         }
         catch (CryptographicException ex)
         {
