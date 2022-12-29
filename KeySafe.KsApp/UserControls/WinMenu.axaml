@@ -1,23 +1,27 @@
-﻿<UserControl 
+﻿<UserControl
+    Name="KsWinMenu"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="KeySafe.KsApp.UserControls.WinMenu"
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-    Name="KsWinMenu"
-    x:Class="KeySafe.KsApp.UserControls.WinMenu">
-    
+    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    
+
     <DockPanel IsVisible="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Profile">
-                <MenuItem Header="Change Password" Command="{Binding ChangePasswordCommand}"/>
+                <MenuItem Command="{Binding ChangePasswordCommand}" Header="Change Password" />
+                <MenuItem Command="{Binding ImportCommand}" Header="Import" />
+                <MenuItem Command="{Binding ExportCommand}" Header="Export" />
             </MenuItem>
         </Menu>
     </DockPanel>
-    
+
 </UserControl>

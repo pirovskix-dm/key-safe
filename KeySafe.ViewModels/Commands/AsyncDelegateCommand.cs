@@ -66,6 +66,7 @@ public class AsyncDelegateCommand<T> : IAsyncCommand<T>
                 var actualException = ex.InnerException?.InnerException ?? ex.InnerException ?? ex;
                 var type = $"{ex.GetType().FullName} | {actualException.GetType().FullName}{Environment.NewLine}";
                 Console.WriteLine($"{type}{actualException.Message}{Environment.NewLine}{actualException.StackTrace}");
+                _isExecuting = false;
             }
             finally
             {

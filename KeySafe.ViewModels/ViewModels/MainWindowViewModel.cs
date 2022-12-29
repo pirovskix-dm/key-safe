@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Text.Json;
 using KeySafe.ViewModels.Commands;
 using KeySafe.ViewModels.Dependencies;
 using KeySafe.ViewModels.Mappers;
@@ -22,6 +23,10 @@ public class MainWindowViewModel : ViewModelBase
     
     public AsyncDelegateCommand ChangePasswordCommand { get; set; }
     
+    public AsyncDelegateCommand ExportCommand { get; set; }
+    
+    public AsyncDelegateCommand ImportCommand { get; set; }
+    
     public AsyncDelegateCommand InitializeCommand { get; set; }
     
     private readonly IDialogWindowsService _dialogWindowsService;
@@ -40,6 +45,8 @@ public class MainWindowViewModel : ViewModelBase
         ChangePasswordCommand = new AsyncDelegateCommand(OnChangePassword);
         EditSourceCommand = new AsyncDelegateCommand<SafeItemViewModel>(OnEditSource);
         RemoveSourceCommand = new AsyncDelegateCommand<SafeItemViewModel>(OnRemoveSource);
+        ExportCommand = new AsyncDelegateCommand(OnExport);
+        ImportCommand = new AsyncDelegateCommand(OnImport);
     }
 
     private async Task OnChangePassword()
@@ -50,13 +57,10 @@ public class MainWindowViewModel : ViewModelBase
             return;
         }
 
-        while (!await _ksStorage.ChangePasswordAsync(oldPassword, newPassword))
+        if (!await _ksStorage.ChangePasswordAsync(oldPassword, newPassword))
         {
-            (oldPassword, newPassword, cancel) = await _dialogWindowsService.ShowPasswordChangeWindowAsync("Invalid old password");
-            if (cancel)
-            {
-                return;
-            }
+            // TODO: fallback to login window
+            _dialogWindowsService.ShutdownApplication();
         }
     }
 
@@ -79,16 +83,15 @@ public class MainWindowViewModel : ViewModelBase
                 continue;
             }
             
-            SafeItems = await SetSafeItemsAsync(result.Storage);
+            SafeItems = ToSafeItems(await result.Storage.GetItemsAsync());
             _ksStorage = result.Storage;
             await _settingsService.UpdateLoginFileAsync(file);
             return;
         }
     }
 
-    private async Task<ObservableCollection<SafeItemViewModel>> SetSafeItemsAsync(KsStorage storage)
+    private ObservableCollection<SafeItemViewModel> ToSafeItems(IReadOnlyCollection<StorageItem> storageItems)
     {
-        var storageItems = await storage.GetItemsAsync();
         var safeItems = new ObservableCollection<SafeItemViewModel>();
         foreach (var storageItem in storageItems)
         {
@@ -131,5 +134,41 @@ public class MainWindowViewModel : ViewModelBase
     {
         var storageItems = SafeItems.Select(item => item.ToStorageItem()).ToList();
         return _ksStorage.SetItemsAsync(storageItems);
+    }
+
+    private async Task OnExport()
+    {
+        var (password, cancel) = await _dialogWindowsService.ShowPasswordConfirmationWindowAsync();
+        if (cancel)
+        {
+            return;
+        }
+
+        var validationResult = await _ksStorage.ValidatePasswordAsync(password);
+        if (!validationResult)
+        {
+            // TODO: fallback to login window
+            _dialogWindowsService.ShutdownApplication();
+        }
+
+        var file = (await _dialogWindowsService.ShowExportWindowAsync()).File;
+        await using var fo = File.Exists(file) ? File.OpenWrite(file) : File.Create(file!);
+        await _ksStorage.ExportDataAsync(fo);
+    }
+
+    private async Task OnImport()
+    {
+        var result = await _dialogWindowsService.ShowImportWindowAsync();
+        
+        await using var fr = File.OpenRead(result.File);
+        
+        var itemsToAdd = await JsonSerializer.DeserializeAsync<List<StorageItem>>(fr);
+        var newItems = SafeItems
+            .Select(item => item.ToStorageItem())
+            .Concat(itemsToAdd)
+            .ToList();
+        
+        await _ksStorage.SetItemsAsync(newItems);
+        SafeItems = ToSafeItems(newItems);
     }
 }

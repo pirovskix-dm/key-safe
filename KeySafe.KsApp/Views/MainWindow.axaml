@@ -1,44 +1,41 @@
-<Window 
+<Window
+    Height="500"
+    Title="KeySafe"
+    Width="900"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="KeySafe.KsApp.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:KeySafe.KsApp.UserControls"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-    xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-    Width="900"
-    Height="500"
-    x:Class="KeySafe.KsApp.Views.MainWindow"
-    Title="KeySafe">
+    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
+    <!--  Osx Menu  -->
     <NativeMenu.Menu>
         <NativeMenu>
             <NativeMenuItem Header="Profile">
                 <NativeMenuItem.Menu>
                     <NativeMenu>
-                        <NativeMenuItem 
-                            Header="Change Password" 
-                            Command="{Binding ChangePasswordCommand}" />
+                        <NativeMenuItem Command="{Binding ChangePasswordCommand}" Header="Change Password" />
                     </NativeMenu>
                 </NativeMenuItem.Menu>
             </NativeMenuItem>
         </NativeMenu>
     </NativeMenu.Menu>
-    
+
     <Grid RowDefinitions="Auto,*">
-        <uc:WinMenu Grid.Row="0" DataContext="{Binding}"/>
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
-            <uc:SourceItemsListControl 
-                Grid.Column="0" 
-                DataContext="{Binding}" />
-            <uc:SourceItemViewControl 
-                Grid.Column="1"
-                DataContext="{Binding}" />
+        <uc:WinMenu DataContext="{Binding}" Grid.Row="0" />
+        <Grid ColumnDefinitions="Auto,*" Grid.Row="1">
+            <uc:SourceItemsListControl DataContext="{Binding}" Grid.Column="0" />
+            <uc:SourceItemViewControl DataContext="{Binding}" Grid.Column="1" />
         </Grid>
     </Grid>
 

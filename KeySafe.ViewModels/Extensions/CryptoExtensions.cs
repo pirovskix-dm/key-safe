@@ -31,6 +31,21 @@ public static class CryptoExtensions
         }
     }
 
+    public static async Task DecryptAsync(this FileStream inputFileStream, FileStream outputFileStream, string key)
+    {
+        using var aes = GetAes(key);
+        using var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+        try
+        {
+            await using var cryptoStream = new CryptoStream(inputFileStream, decryptor, CryptoStreamMode.Read);
+            await cryptoStream.CopyToAsync(outputFileStream);
+        }
+        catch (CryptographicException ex)
+        {
+            throw new KsInvalidKeyException(ex);
+        }
+    }
+
     private static Aes GetAes(string key)
     {
         var aes = Aes.Create();

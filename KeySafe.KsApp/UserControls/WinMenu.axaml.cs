@@ -1,4 +1,6 @@
-﻿using Avalonia.Platform;
+﻿using Avalonia.Interactivity;
+using Avalonia.Platform;
+using KeySafe.KsApp.Services;
 
 namespace KeySafe.KsApp.UserControls;
 

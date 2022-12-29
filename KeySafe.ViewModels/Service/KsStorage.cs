@@ -1,4 +1,5 @@
-﻿using KeySafe.ViewModels.Exceptions;
+﻿using System.Text.Json;
+using KeySafe.ViewModels.Exceptions;
 using KeySafe.ViewModels.Extensions;
 
 namespace KeySafe.ViewModels.Service;
@@ -72,6 +73,17 @@ public sealed class KsStorage
         _key = GetKey(newPassword);
         await SetItemsAsync(data);
         return true;
+    }
+
+    public Task<bool> ValidatePasswordAsync(string password)
+    {
+        return ValidatePasswordAsync(FilePath, password);
+    }
+
+    public async Task ExportDataAsync(FileStream outputFileStream)
+    {
+        await using var fi = File.OpenRead(FilePath);
+        await fi.DecryptAsync(outputFileStream, _key);
     }
     
     private static async Task<bool> ValidatePasswordAsync(string file, string password)
