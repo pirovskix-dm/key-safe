@@ -22,7 +22,7 @@ public readonly record struct ImportResult(string File);
 
 public interface IDialogWindowsService
 {
-    Task<SafeItemEditResult> ShowSafeItemWindowAsync(SafeItemViewModel safeItem = null);
+    Task<SafeItemEditResult> ShowSafeItemWindowAsync(SafeItemViewModel safeItem = null, string errorMessage = null);
     Task<LoginResult> ShowLoginWindowAsync(string loginFile, string errorMessage = null);
     Task<PasswordChangeResult> ShowPasswordChangeWindowAsync(string errorMessage = null);
     Task<PasswordConfirmationResult> ShowPasswordConfirmationWindowAsync();

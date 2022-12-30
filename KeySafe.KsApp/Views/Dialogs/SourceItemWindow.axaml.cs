@@ -18,7 +18,7 @@ public class SourceItemWindow : Window
         AvaloniaXamlLoader.Load(this);
     }
         
-    public static Task<SafeItemEditResult> ShowAsync(Window parent, string name, string login, string password, string web, string note)
+    public static Task<SafeItemEditResult> ShowAsync(Window parent, string name, string login, string password, string web, string note, string errorMessage)
     {
         var sourceItemWindow = new SourceItemWindow();
 
@@ -39,7 +39,12 @@ public class SourceItemWindow : Window
         noteField.Text = note ?? string.Empty;
             
         var tcs = new TaskCompletionSource<SafeItemEditResult>();
-            
+
+        if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            errorField.Show(errorMessage);
+        }
+        
         saveButton.Click += delegate
         {
             if (string.IsNullOrWhiteSpace(nameField.Text))

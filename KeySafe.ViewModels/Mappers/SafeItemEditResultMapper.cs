@@ -1,4 +1,5 @@
 ﻿using KeySafe.ViewModels.Dependencies;
+using KeySafe.ViewModels.Service;
 using KeySafe.ViewModels.ViewModels;
 
 namespace KeySafe.ViewModels.Mappers;
@@ -7,17 +8,25 @@ public static class SafeItemEditResultMapper
 {
     public static SafeItemViewModel ToSafeItemViewModel(this SafeItemEditResult safeItemEditResult)
     {
-        var safeItemViewModel = new SafeItemViewModel();
-        safeItemEditResult.ToSafeItemViewModel(ref safeItemViewModel);
-        return safeItemViewModel;
+        return new SafeItemViewModel
+        {
+            Name = safeItemEditResult.Name,
+            Login = safeItemEditResult.Login,
+            Password = safeItemEditResult.Password,
+            Web = safeItemEditResult.Web,
+            Note = safeItemEditResult.Note,
+        };
     }
     
-    public static void ToSafeItemViewModel(this SafeItemEditResult safeItemEditResult, ref SafeItemViewModel safeItemViewModel)
+    public static StorageItem ToStorageItem(this SafeItemEditResult safeItemEditResult)
     {
-        safeItemViewModel.Name = safeItemEditResult.Name;
-        safeItemViewModel.Login = safeItemEditResult.Login;
-        safeItemViewModel.Password = safeItemEditResult.Password;
-        safeItemViewModel.Web = safeItemEditResult.Web;
-        safeItemViewModel.Note = safeItemEditResult.Note;
+        return new StorageItem
+        {
+            Name = safeItemEditResult.Name,
+            Login = safeItemEditResult.Login,
+            Password = safeItemEditResult.Password,
+            Web = safeItemEditResult.Web,
+            Note = safeItemEditResult.Note,
+        };
     }
 }
