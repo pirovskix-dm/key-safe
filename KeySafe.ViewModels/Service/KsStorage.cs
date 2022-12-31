@@ -73,13 +73,13 @@ public sealed class KsStorage
 
     public async Task RemoveAsync(string name)
     {
-        var newItems = Items.Where(i => i.Name != name).ToList();
+        var newItems = Items.Where(i => !i.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase)).ToList();
         await SetItemsAsync(newItems.AsReadOnly());
     }
 
     public async Task<bool> UpdateAsync(string name, StorageItem item)
     {
-        if (!ValidateItem(item))
+        if (!name.Equals(item.Name, StringComparison.InvariantCultureIgnoreCase) && !ValidateItem(item))
         {
             return false;
         }
