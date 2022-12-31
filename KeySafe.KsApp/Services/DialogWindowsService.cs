@@ -9,18 +9,18 @@ namespace KeySafe.KsApp.Services;
 public class DialogWindowsService : IDialogWindowsService
 {
     private Window _mainWindow => ((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime).MainWindow;
-    
+
     public async Task<SafeItemEditResult> ShowSafeItemWindowAsync(SafeItemViewModel safeItem = null, string errorMessage = null)
     {
         var result = await SourceItemWindow.ShowAsync(
-            _mainWindow, 
-            safeItem?.Name, 
-            safeItem?.Login, 
-            safeItem?.Password, 
-            safeItem?.Web, 
+            _mainWindow,
+            safeItem?.Name,
+            safeItem?.Login,
+            safeItem?.Password,
+            safeItem?.Web,
             safeItem?.Note,
             errorMessage);
-        
+
         _mainWindow.Activate();
         return result;
     }

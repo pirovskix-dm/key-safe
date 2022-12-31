@@ -17,7 +17,7 @@ public class SourceItemWindow : Window
     {
         AvaloniaXamlLoader.Load(this);
     }
-        
+
     public static Task<SafeItemEditResult> ShowAsync(Window parent, string name, string login, string password, string web, string note, string errorMessage)
     {
         var sourceItemWindow = new SourceItemWindow();
@@ -30,21 +30,21 @@ public class SourceItemWindow : Window
         var errorField = sourceItemWindow.FindControl<ErrorField>("ErrorField");
         var saveButton = sourceItemWindow.FindControl<Button>("SaveButton");
         var cancelButton = sourceItemWindow.FindControl<Button>("CancelButton");
-            
+
         nameField.Text = name ?? string.Empty;
         loginField.Text = login ?? string.Empty;
         passwordField.Password = password ?? string.Empty;
         webField.Text = web ?? string.Empty;
         webField.Text = web ?? string.Empty;
         noteField.Text = note ?? string.Empty;
-            
+
         var tcs = new TaskCompletionSource<SafeItemEditResult>();
 
         if (!string.IsNullOrWhiteSpace(errorMessage))
         {
             errorField.Show(errorMessage);
         }
-        
+
         saveButton.Click += delegate
         {
             if (string.IsNullOrWhiteSpace(nameField.Text))
@@ -52,7 +52,7 @@ public class SourceItemWindow : Window
                 errorField.Show("Name field is required");
                 return;
             }
-                
+
             tcs.TrySetResult(new SafeItemEditResult()
             {
                 Name = nameField.Text,
@@ -63,18 +63,15 @@ public class SourceItemWindow : Window
             });
             sourceItemWindow.Close();
         };
-            
+
         cancelButton.Click += delegate
         {
             tcs.TrySetResult(new SafeItemEditResult(null, null, null, null, null, true));
             sourceItemWindow.Close();
         };
-            
-        sourceItemWindow.Closed += delegate
-        {
-            tcs.TrySetResult(new SafeItemEditResult(null, null, null, null, null, true)); 
-        };
-            
+
+        sourceItemWindow.Closed += delegate { tcs.TrySetResult(new SafeItemEditResult(null, null, null, null, null, true)); };
+
         sourceItemWindow.ShowDialog(parent);
         return tcs.Task;
     }

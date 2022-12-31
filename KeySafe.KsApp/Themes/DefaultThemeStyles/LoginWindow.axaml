@@ -1,26 +1,26 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
     <Style Selector="Window.LoginWindow">
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="Gray" />
-        
+
         <Setter Property="Template">
             <ControlTemplate>
-                <Border 
-                    Background="{TemplateBinding Background}" 
-                    BorderThickness="{TemplateBinding BorderThickness}" 
-                    BorderBrush="{TemplateBinding BorderBrush}">
-                    <ContentPresenter 
-                        Name="PART_ContentPresenter"
-                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                    <ContentPresenter
                         Content="{TemplateBinding Content}"
-                        Margin="{TemplateBinding Padding}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
                         HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        Margin="{TemplateBinding Padding}"
+                        Name="PART_ContentPresenter"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
                 </Border>
             </ControlTemplate>
         </Setter>
-        
+
     </Style>
-    
+
 </Styles>

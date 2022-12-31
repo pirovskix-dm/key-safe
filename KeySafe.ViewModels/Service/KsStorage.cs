@@ -10,13 +10,13 @@ public readonly record struct StorageGetResult(bool Success, string ErrorMessage
 public sealed class KsStorage
 {
     public IReadOnlyCollection<StorageItem> Items { get; private set; }
-    
+
     private const string SECRET = "hpYo2FFZoGj133LHn7ei";
-    
+
     public string FilePath { get; }
-    
+
     private string _key;
-    
+
     private KsStorage(string file, string password, IReadOnlyCollection<StorageItem> items)
     {
         FilePath = file;
@@ -34,7 +34,7 @@ public sealed class KsStorage
         await using var fs = File.Create(file!);
         var items = Array.Empty<StorageItem>();
         await fs.EncryptAsync(items, GetKey(password));
-        
+
         return new StorageGetResult(true, null, new KsStorage(file, password, items));
     }
 
@@ -58,15 +58,15 @@ public sealed class KsStorage
     {
         return !Items.Any(i => i.Name.Equals(item.Name, StringComparison.InvariantCultureIgnoreCase));
     }
-    
+
     public async Task<bool> AddAsync(StorageItem item)
     {
         if (!ValidateItem(item))
         {
             return false;
         }
-        
-        var newItems = Items.Concat(new List<StorageItem> {item}).ToList();
+
+        var newItems = Items.Concat(new List<StorageItem> { item }).ToList();
         await SetItemsAsync(newItems.AsReadOnly());
         return true;
     }
@@ -83,7 +83,7 @@ public sealed class KsStorage
         {
             return false;
         }
-        
+
         var newItems = Items
             .Where(i => i.Name != name)
             .Concat(new List<StorageItem> { item })
@@ -98,7 +98,7 @@ public sealed class KsStorage
         {
             return false;
         }
-        
+
         _key = GetKey(newPassword);
         await SetItemsAsync(Items);
         return true;
@@ -120,7 +120,7 @@ public sealed class KsStorage
         var items = await inputFileStream.DeserializeAsync<List<StorageItem>>();
         await SetItemsAsync(items.AsReadOnly());
     }
-    
+
     private static async Task<bool> ValidatePasswordAsync(string file, string password)
     {
         await using var fs = File.OpenRead(file);
@@ -134,18 +134,18 @@ public sealed class KsStorage
             return false;
         }
     }
-    
+
     private static string GetKey(string password)
     {
         return $"{password.Trim().Replace(" ", "+")}_{SECRET}";
     }
-    
+
     private static async Task<IReadOnlyList<StorageItem>> GetItemsAsync(string file, string password)
     {
         await using var fs = File.OpenRead(file);
         return await fs.DecryptAsync<List<StorageItem>>(GetKey(password));
     }
-    
+
     private async Task SetItemsAsync(IReadOnlyCollection<StorageItem> items)
     {
         await using var fs = new FileStream(FilePath, FileMode.Truncate, FileAccess.Write, FileShare.None);

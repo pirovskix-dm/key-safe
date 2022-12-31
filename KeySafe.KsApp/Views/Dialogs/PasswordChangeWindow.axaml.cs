@@ -21,7 +21,7 @@ public class PasswordChangeWindow : Window
     public static Task<PasswordChangeResult> ShowAsync(Window parent, string errorMessage)
     {
         var passwordChangeWindow = new PasswordChangeWindow();
-            
+
         var oldPasswordField = passwordChangeWindow.FindControl<KsPasswordField>("OldPasswordField");
         var newPasswordField = passwordChangeWindow.FindControl<KsPasswordField>("NewPasswordField");
         var errorField = passwordChangeWindow.FindControl<ErrorField>("ErrorField");
@@ -34,7 +34,7 @@ public class PasswordChangeWindow : Window
         }
 
         var tcs = new TaskCompletionSource<PasswordChangeResult>();
-            
+
         changeButton.Click += delegate
         {
             if (string.IsNullOrWhiteSpace(oldPasswordField.Password) || string.IsNullOrWhiteSpace(newPasswordField.Password))
@@ -48,7 +48,7 @@ public class PasswordChangeWindow : Window
                 errorField.Show("old and new password should not be same");
                 return;
             }
-                
+
             tcs.TrySetResult(new PasswordChangeResult(oldPasswordField.Password.Trim(), newPasswordField.Password.Trim(), false));
             passwordChangeWindow.Close();
         };
@@ -59,11 +59,8 @@ public class PasswordChangeWindow : Window
             passwordChangeWindow.Close();
         };
 
-        passwordChangeWindow.Closed += delegate
-        {
-            tcs.TrySetResult(new PasswordChangeResult(null, null, true));
-        };
-            
+        passwordChangeWindow.Closed += delegate { tcs.TrySetResult(new PasswordChangeResult(null, null, true)); };
+
         passwordChangeWindow.ShowDialog(parent);
         return tcs.Task;
     }

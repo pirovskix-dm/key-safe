@@ -6,19 +6,19 @@ namespace KeySafe.KsApp.UserControls;
 public class KsPasswordField : UserControl, IStyleable
 {
     Type IStyleable.StyleKey => typeof(KsPasswordField);
-        
+
     public static readonly StyledProperty<bool> RevealPasswordProperty =
         AvaloniaProperty.Register<KsPasswordField, bool>(nameof(RevealPassword), defaultValue: false);
-        
+
     public static readonly StyledProperty<string> DataProperty =
         AvaloniaProperty.Register<KsPasswordField, string>(nameof(Data), defaultValue: string.Empty);
-        
+
     public static readonly StyledProperty<string> TitleProperty =
         AvaloniaProperty.Register<KsPasswordField, string>(nameof(Title), defaultValue: string.Empty);
-        
+
     public static readonly StyledProperty<bool> IsReadOnlyProperty =
         AvaloniaProperty.Register<KsPasswordField, bool>(nameof(IsReadOnly), defaultValue: false);
-        
+
     public static readonly StyledProperty<bool> ShowCopyButtonProperty =
         AvaloniaProperty.Register<KsPasswordField, bool>(nameof(ShowCopyButton), defaultValue: false);
 
@@ -27,31 +27,31 @@ public class KsPasswordField : UserControl, IStyleable
         get => _passwordBox.Text;
         set => _passwordBox.Text = value;
     }
-        
+
     public string Data
     {
         get => GetValue(DataProperty);
         set => SetValue(DataProperty, value);
     }
-        
+
     public string Title
     {
         get => GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
     }
-        
+
     public bool IsReadOnly
     {
         get => GetValue(IsReadOnlyProperty);
         set => SetValue(IsReadOnlyProperty, value);
     }
-        
+
     public bool ShowCopyButton
     {
         get => GetValue(ShowCopyButtonProperty);
         set => SetValue(ShowCopyButtonProperty, value);
     }
-        
+
     public bool RevealPassword
     {
         get => GetValue(RevealPasswordProperty);
@@ -59,7 +59,7 @@ public class KsPasswordField : UserControl, IStyleable
     }
 
     private TextBox _passwordBox;
-        
+
     public KsPasswordField()
     {
         InitializeComponent();

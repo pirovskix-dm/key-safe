@@ -1,26 +1,26 @@
 <Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
     <Style Selector="StackPanel.LoginPanel">
-        <Setter Property="Orientation" Value="Vertical" /> 
-        <Setter Property="Margin" Value="20" /> 
+        <Setter Property="Orientation" Value="Vertical" />
+        <Setter Property="Margin" Value="20" />
     </Style>
-    
+
     <Style Selector="StackPanel.LoginPanel TextBlock.LoginHeader">
-        <Setter Property="FontSize" Value="20" /> 
+        <Setter Property="FontSize" Value="20" />
     </Style>
-    
+
     <Style Selector="StackPanel.LoginPanel TextBox">
-        <Setter Property="Height" Value="23" /> 
-        <Setter Property="Width" Value="200" /> 
-        <Setter Property="Margin" Value="5" /> 
-        <Setter Property="VerticalAlignment" Value="Center" /> 
-        <Setter Property="HorizontalAlignment" Value="Left" /> 
+        <Setter Property="Height" Value="23" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
     </Style>
-    
+
     <Style Selector="StackPanel.LoginPanel Button">
-        <Setter Property="Width" Value="200" /> 
-        <Setter Property="Margin" Value="5" /> 
-        <Setter Property="HorizontalContentAlignment" Value="Center" /> 
+        <Setter Property="Width" Value="200" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
-    
+
 </Styles>

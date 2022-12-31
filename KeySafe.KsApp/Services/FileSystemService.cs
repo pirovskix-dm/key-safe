@@ -7,7 +7,7 @@ public static class FileSystemService
         var saveFileDialog = new SaveFileDialog();
         return saveFileDialog.ShowAsync(window);
     }
-    
+
     public static async Task<string> OpenFileDialogAsync(this Window window)
     {
         var openFileDialog = new OpenFileDialog();

@@ -5,12 +5,11 @@ namespace KeySafe.ViewModels.Commands;
 
 public class AsyncDelegateUnit
 {
-    
 }
 
 public class AsyncDelegateCommand : AsyncDelegateCommand<AsyncDelegateUnit>
 {
-    public AsyncDelegateCommand(Func<Task> command, Func<bool> canExecute = null, Func<Exception, Task> exceptionHandler = null) 
+    public AsyncDelegateCommand(Func<Task> command, Func<bool> canExecute = null, Func<Exception, Task> exceptionHandler = null)
         : base(_ => command(), _ => canExecute?.Invoke() ?? true, exceptionHandler)
     {
     }
@@ -19,13 +18,13 @@ public class AsyncDelegateCommand : AsyncDelegateCommand<AsyncDelegateUnit>
 public class AsyncDelegateCommand<T> : IAsyncCommand<T>
 {
     public event EventHandler CanExecuteChanged;
-    
+
     private bool _isExecuting;
 
     private readonly Func<T, Task> _command;
-    
+
     private readonly Func<T, bool> _canExecute;
-    
+
     private readonly Func<Exception, Task> _errorHandler;
 
     public AsyncDelegateCommand(Func<T, Task> command, Func<T, bool> canExecute = null, Func<Exception, Task> errorHandler = null)
@@ -35,14 +34,14 @@ public class AsyncDelegateCommand<T> : IAsyncCommand<T>
         _canExecute = canExecute;
         _errorHandler = errorHandler;
     }
-    
+
     public bool CanExecute(object parameter)
     {
         if (typeof(T) == typeof(AsyncDelegateUnit))
         {
             return !_isExecuting && (_canExecute?.Invoke(default) ?? true);
         }
-        
+
         return !_isExecuting && (_canExecute?.Invoke((T)parameter) ?? true);
     }
 
@@ -76,7 +75,7 @@ public class AsyncDelegateCommand<T> : IAsyncCommand<T>
 
         RaiseCanExecuteChanged();
     }
-    
+
     public void RaiseCanExecuteChanged()
     {
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);

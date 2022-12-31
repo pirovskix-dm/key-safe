@@ -7,19 +7,19 @@ namespace KeySafe.KsApp.UserControls;
 public class KsTextField : UserControl, IStyleable
 {
     Type IStyleable.StyleKey => typeof(KsTextField);
-        
+
     public static readonly StyledProperty<string> DataProperty =
         AvaloniaProperty.Register<KsTextField, string>(nameof(Data), defaultValue: string.Empty);
-        
+
     public static readonly StyledProperty<string> TitleProperty =
         AvaloniaProperty.Register<KsTextField, string>(nameof(Title), defaultValue: string.Empty);
-        
+
     public static readonly StyledProperty<bool> IsReadOnlyProperty =
         AvaloniaProperty.Register<KsTextField, bool>(nameof(IsReadOnly), defaultValue: false);
-        
+
     public static readonly StyledProperty<bool> ShowCopyButtonProperty =
         AvaloniaProperty.Register<KsTextField, bool>(nameof(ShowCopyButton), defaultValue: false);
-    
+
     public static readonly StyledProperty<int> LinesProperty =
         AvaloniaProperty.Register<KsTextField, int>(nameof(Lines), defaultValue: 1);
 
@@ -28,19 +28,19 @@ public class KsTextField : UserControl, IStyleable
         get => GetValue(DataProperty);
         set => SetValue(DataProperty, value);
     }
-        
+
     public string Title
     {
         get => GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
     }
-        
+
     public bool IsReadOnly
     {
         get => GetValue(IsReadOnlyProperty);
         set => SetValue(IsReadOnlyProperty, value);
     }
-        
+
     public bool ShowCopyButton
     {
         get => GetValue(ShowCopyButtonProperty);
@@ -75,7 +75,7 @@ public class KsTextField : UserControl, IStyleable
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        
+
         if (Lines > 1)
         {
             _textBox.Height = Lines * 25;
@@ -84,7 +84,7 @@ public class KsTextField : UserControl, IStyleable
             _textBox.ClearValue(ToolTip.TipProperty);
         }
     }
-    
+
     private void CopyButton_OnClick(object sender, RoutedEventArgs e)
     {
         var text = _textBox.Text;

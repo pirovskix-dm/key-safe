@@ -28,7 +28,7 @@ public class LoginWindow : Window
         var loginWindow = new LoginWindow();
 
         var selectedFile = string.Empty;
-        
+
         var selectFileButton = loginWindow.FindControl<Button>("KsSelectFileButton");
         var passwordField = loginWindow.FindControl<TextBox>("KsPasswordBox");
         var errorField = loginWindow.FindControl<ErrorField>("ErrorField");
@@ -49,7 +49,7 @@ public class LoginWindow : Window
         {
             errorField.Show(errorMessage);
         }
-            
+
         var tcs = new TaskCompletionSource<LoginResult>();
 
         createFileButton.Click += async delegate
@@ -66,11 +66,11 @@ public class LoginWindow : Window
                 errorField.Show("Please, provide a file");
                 return;
             }
-            
+
             tcs.TrySetResult(new LoginResult(file, passwordField.Text.Trim(), LoginAction.Register));
             loginWindow.Close();
         };
-        
+
         selectFileButton.Click += async delegate
         {
             var file = await loginWindow.OpenFileDialogAsync();
@@ -91,11 +91,11 @@ public class LoginWindow : Window
                 errorField.Show("Please, provide file and password");
                 return;
             }
-            
+
             tcs.TrySetResult(new LoginResult(selectedFile, passwordField.Text.Trim(), LoginAction.Login));
             loginWindow.Close();
         };
-            
+
         loginWindow.ShowDialog(parent);
         return tcs.Task;
     }

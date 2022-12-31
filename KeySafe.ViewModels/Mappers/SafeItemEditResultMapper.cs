@@ -17,7 +17,7 @@ public static class SafeItemEditResultMapper
             Note = safeItemEditResult.Note,
         };
     }
-    
+
     public static StorageItem ToStorageItem(this SafeItemEditResult safeItemEditResult)
     {
         return new StorageItem

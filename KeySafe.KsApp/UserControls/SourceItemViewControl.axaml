@@ -1,49 +1,51 @@
-<UserControl 
+<UserControl
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="KeySafe.KsApp.UserControls.SourceItemViewControl"
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
     xmlns:uc="using:KeySafe.KsApp.UserControls"
-    x:Class="KeySafe.KsApp.UserControls.SourceItemViewControl">
-    
+    xmlns:vm="using:KeySafe.ViewModels.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    
-    <StackPanel IsVisible="{Binding HasSelection}" Classes="SourceItemView">
+
+    <StackPanel Classes="SourceItemView" IsVisible="{Binding HasSelection}">
         <uc:KsTextField
-            Title="Name:"
+            Data="{Binding SelectedSafeItem.Name}"
             IsReadOnly="True"
             ShowCopyButton="True"
-            Data="{Binding SelectedSafeItem.Name}" />
+            Title="Name:" />
         <uc:KsTextField
-            Title="Login:"
+            Data="{Binding SelectedSafeItem.Login}"
             IsReadOnly="True"
             ShowCopyButton="True"
-            Data="{Binding SelectedSafeItem.Login}" />
+            Title="Login:" />
         <uc:KsTextField
-            Title="Web:"
+            Data="{Binding SelectedSafeItem.Web}"
             IsReadOnly="True"
             ShowCopyButton="True"
-            Data="{Binding SelectedSafeItem.Web}" />
+            Title="Web:" />
         <uc:KsPasswordField
-            Title="Password:"
-            IsReadOnly="True"
-            ShowCopyButton="True"
             Data="{Binding SelectedSafeItem.Password}"
-            RevealPassword="False" />
-        <uc:KsTextField
-            Title="Note:"
-            Lines="4"
             IsReadOnly="True"
+            RevealPassword="False"
             ShowCopyButton="True"
-            Data="{Binding SelectedSafeItem.Note}" />
+            Title="Password:" />
+        <uc:KsTextField
+            Data="{Binding SelectedSafeItem.Note}"
+            IsReadOnly="True"
+            Lines="4"
+            ShowCopyButton="True"
+            Title="Note:" />
         <Button
-            Content="Edit"
             Command="{Binding EditSourceCommand}"
-            CommandParameter="{Binding SelectedSafeItem}" />
+            CommandParameter="{Binding SelectedSafeItem}"
+            Content="Edit" />
     </StackPanel>
-    
+
 </UserControl>

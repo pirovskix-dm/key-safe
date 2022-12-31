@@ -5,9 +5,9 @@ public readonly record struct SettingsItem(string LoginFile);
 public class SettingsService
 {
     public SettingsItem Settings { get; private set; }
-    
+
     private readonly string _file;
-    
+
     public SettingsService()
     {
         var directory = InitDirectory("KeySafe");
@@ -21,7 +21,7 @@ public class SettingsService
         await SetSettingsAsync(newSettings);
         Settings = newSettings;
     }
-    
+
     private SettingsItem GetSettings()
     {
         var json = File.ReadAllText(_file);
@@ -29,6 +29,7 @@ public class SettingsService
         {
             return default;
         }
+
         return json.Deserialize<SettingsItem>();
     }
 
@@ -37,7 +38,7 @@ public class SettingsService
         var json = settingsItem.Serialize();
         return File.WriteAllTextAsync(_file, json);
     }
-    
+
     private string InitDirectory(string name)
     {
         var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -45,7 +46,7 @@ public class SettingsService
         Directory.CreateDirectory(baseDirectory);
         return baseDirectory;
     }
-    
+
     private string InitFile(string directory, string name)
     {
         var file = Path.Combine(directory, name);

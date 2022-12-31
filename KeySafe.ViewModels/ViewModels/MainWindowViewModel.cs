@@ -9,29 +9,29 @@ namespace KeySafe.ViewModels.ViewModels;
 public class MainWindowViewModel : ViewModelBase
 {
     public ObservableCollection<SafeItemViewModel> SafeItems { get; set; } = new();
-    
+
     public SafeItemViewModel SelectedSafeItem { get; set; }
-    
+
     public string SearchText { get; set; }
 
     public bool HasSelection => SelectedSafeItem != null;
-    
+
     public AsyncDelegateCommand AddSourceCommand { get; set; }
-    
+
     public AsyncDelegateCommand<SafeItemViewModel> EditSourceCommand { get; set; }
-    
+
     public AsyncDelegateCommand<SafeItemViewModel> RemoveSourceCommand { get; set; }
-    
+
     public AsyncDelegateCommand ChangePasswordCommand { get; set; }
-    
+
     public AsyncDelegateCommand ExportCommand { get; set; }
-    
+
     public AsyncDelegateCommand ImportCommand { get; set; }
-    
+
     public AsyncDelegateCommand InitializeCommand { get; set; }
-    
+
     public AsyncDelegateCommand SearchCommand { get; set; }
-    
+
     private readonly IDialogWindowsService _dialogWindowsService;
 
     private KsStorage _ksStorage;
@@ -77,7 +77,7 @@ public class MainWindowViewModel : ViewModelBase
             { LoginAction.Login, KsStorage.GetAsync },
             { LoginAction.Register, KsStorage.CreateAsync },
         };
-        
+
         while (true)
         {
             var (success, errorMessage, storage) = await hi[loginAction].Invoke(file, password);
@@ -109,8 +109,9 @@ public class MainWindowViewModel : ViewModelBase
             if (result.Cancel)
             {
                 return;
-            }   
+            }
         }
+
         SetSafeItems();
     }
 
@@ -134,9 +135,9 @@ public class MainWindowViewModel : ViewModelBase
             if (result.Cancel)
             {
                 return;
-            }   
+            }
         }
-        
+
         SetSafeItems();
     }
 
@@ -167,7 +168,7 @@ public class MainWindowViewModel : ViewModelBase
         await _ksStorage.ImportDataAsync(fr);
         SetSafeItems();
     }
-    
+
     private Task OnSearch()
     {
         SetSafeItems();
@@ -185,10 +186,10 @@ public class MainWindowViewModel : ViewModelBase
         var newItems = _ksStorage.Items
             .Where(i => i.Name.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase))
             .ToList();
-        
+
         SafeItems = ToSafeItems(newItems);
     }
-    
+
     private ObservableCollection<SafeItemViewModel> ToSafeItems(IReadOnlyCollection<StorageItem> storageItems)
     {
         var safeItems = new ObservableCollection<SafeItemViewModel>();
@@ -196,6 +197,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             safeItems.Add(storageItem.ToSafeItemViewModel());
         }
+
         return safeItems;
     }
 }

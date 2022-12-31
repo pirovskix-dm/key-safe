@@ -1,27 +1,28 @@
-﻿<UserControl 
+﻿<UserControl
+    Name="KsTextField"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d"
+    x:Class="KeySafe.KsApp.UserControls.KsTextField"
     xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-    Name="KsTextField"
-    x:Class="KeySafe.KsApp.UserControls.KsTextField">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <StackPanel Classes="KsField">
-        <Label
-            Content="{Binding Title, ElementName=KsTextField}" />
+        <Label Content="{Binding Title, ElementName=KsTextField}" />
         <TextBox
-            Name="KsTextBox"
             IsReadOnly="{Binding IsReadOnly, ElementName=KsTextField}"
+            Name="KsTextBox"
             Text="{Binding Data, ElementName=KsTextField}">
             <ToolTip.Tip>
                 <TextBlock Text="{Binding Data, ElementName=KsTextField}" />
             </ToolTip.Tip>
         </TextBox>
         <Button
-            IsVisible="{Binding ShowCopyButton, ElementName=KsTextField}"
+            Click="CopyButton_OnClick"
             Content="Copy"
-            Click="CopyButton_OnClick" />
+            IsVisible="{Binding ShowCopyButton, ElementName=KsTextField}" />
     </StackPanel>
 
 </UserControl>
