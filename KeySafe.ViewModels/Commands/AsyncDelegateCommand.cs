@@ -1,4 +1,4 @@
-﻿using AsyncAwaitBestPractices;
+using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
 
 namespace KeySafe.ViewModels.Commands;

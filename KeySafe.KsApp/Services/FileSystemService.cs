@@ -1,4 +1,4 @@
-﻿namespace KeySafe.KsApp.Services;
+namespace KeySafe.KsApp.Services;
 
 public static class FileSystemService
 {

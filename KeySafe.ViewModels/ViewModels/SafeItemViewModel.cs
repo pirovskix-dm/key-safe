@@ -1,4 +1,4 @@
-﻿namespace KeySafe.ViewModels.ViewModels;
+namespace KeySafe.ViewModels.ViewModels;
 
 public class SafeItemViewModel : ViewModelBase
 {

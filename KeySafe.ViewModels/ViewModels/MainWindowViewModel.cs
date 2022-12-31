@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using KeySafe.ViewModels.Commands;
 using KeySafe.ViewModels.Dependencies;
 using KeySafe.ViewModels.Mappers;

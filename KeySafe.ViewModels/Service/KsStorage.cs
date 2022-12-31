@@ -1,4 +1,4 @@
-﻿using KeySafe.ViewModels.Exceptions;
+using KeySafe.ViewModels.Exceptions;
 using KeySafe.ViewModels.Extensions;
 
 namespace KeySafe.ViewModels.Service;

@@ -1,4 +1,4 @@
-﻿using KeySafe.ViewModels.Service;
+using KeySafe.ViewModels.Service;
 using KeySafe.ViewModels.ViewModels;
 
 namespace KeySafe.ViewModels.Mappers;

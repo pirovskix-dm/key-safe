@@ -1,4 +1,4 @@
-﻿using Avalonia.Interactivity;
+using Avalonia.Interactivity;
 using Avalonia.Styling;
 
 namespace KeySafe.KsApp.UserControls;

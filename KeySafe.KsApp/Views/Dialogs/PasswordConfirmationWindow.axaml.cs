@@ -1,4 +1,4 @@
-﻿using KeySafe.KsApp.UserControls;
+using KeySafe.KsApp.UserControls;
 using KeySafe.ViewModels.Dependencies;
 
 namespace KeySafe.KsApp.Views.Dialogs;

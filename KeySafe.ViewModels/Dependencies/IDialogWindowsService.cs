@@ -1,4 +1,4 @@
-﻿using KeySafe.ViewModels.ViewModels;
+using KeySafe.ViewModels.ViewModels;
 
 namespace KeySafe.ViewModels.Dependencies;
 

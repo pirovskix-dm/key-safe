@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.ApplicationLifetimes;
 using KeySafe.KsApp.Views;
 using KeySafe.KsApp.Views.Dialogs;
 using KeySafe.ViewModels.Dependencies;
